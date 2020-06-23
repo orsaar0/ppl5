@@ -51,11 +51,19 @@
 ;;Type: [Number * Number -> LzlList<Pair<Number,Number>>
 ;;Pre-condition: init =/= 0
 ;;Tests: (take (sqrt-lzl 2 1) 3) →  '((1 . 1) (3/2 . 1/4) (17/12 . 1/144)) 
-(define sqrt-lzl 
+(define calc-accuracy
+  (lambda (x guess)
+    (abs (- (square guess) x))))
+
+(define sqrt-lzl
   (lambda (x init)
-   @TODO
-  )
-)  
+    (letrec
+        ((sqrt-lzl-rec
+          (lambda (x guess)
+            (cons-lzl (cons guess (calc-accuracy x guess))
+                      (lambda () (sqrt-lzl-rec
+                                  x (improve x guess)))))))
+      (sqrt-lzl-rec x init))))
 
 ;;Signature: find-first(lzlst, p)
 ;;Purpose: Return the first item in the given lazy list which satisfies the given predicate. If no such item exists return 'fail.
@@ -64,11 +72,10 @@
 ;;Tests: (find-first (integers-from 1) (lambda (x) (> x 10))) --> 11; (find-first (cons-lzl 1 (lambda() (cons-lzl 2 (lambda () '())))) (lambda (x) (> x 10))) --> 'fail
 
 (define find-first
-  (lambda (lz-lst p)
-   @TODO
-  )
-)
-
+  (lambda (lzl p)
+    (cond ((empty-lzl? lzl) 'fail)
+          ((p (head lzl)) (head lzl))
+          (else (find-first (tail lzl) p)))))
 ;;Signature: sqrt2(x,init,epsilon)
 ;;Purpose: return approximation of the square root of the given number x, according to Newton method, starting from init guess with epsilon threshold.  The procedure uses sqrt-lzl and find-first procedures.
 ;;Type: [Number * Number * Number -> Number]
@@ -76,10 +83,13 @@
 ;;Tests: (sqrt2 2 1 0.0001) → 1 169/408
 (define sqrt2
   (lambda (x init epsilon)
-   @TODO
+   (car (find-first 
+      (sqrt-lzl x init)
+      (lambda (sPair) 
+          (< (cdr sPair) epsilon)))
+   )
   )
 )
-
 
 ;;;; Q2
 
@@ -118,16 +128,15 @@
 ;;(collect-all-values (list l1 l2) 'e) --> '(2 5)
 ;;(collect-all-values (list l1 l2) 'k)--> '()
 
-(define collect-all-values-1
- (lambda (lists key)
-  @TODO
- )
-)
+; (define collect-all-values-1
+;  (lambda (lists key)
+;   @TODO
+;  )
+; )
 
-(define collect-all-values-2
- (lambda (lists key)
-  @TODO
- )
-)
-   
+; (define collect-all-values-2
+;  (lambda (lists key)
+;   @TODO
+;  )
+; )
    
