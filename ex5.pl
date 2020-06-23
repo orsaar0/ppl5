@@ -74,12 +74,14 @@ pick_me_up(Child_name,Phone) :- parents(Child_name,X,Y), parent_details(X, Phone
 pick_me_up(Child_name,Phone) :- parents(Child_name,X,Y), parent_details(Y, Phone, true).
 
 % Signature: active_child(Name)/1
-% Purpose:
-%
+% Purpose: s true when a child participates in at least two activities
+active_child(Name):- participate(Name, X), participate(Name, Y), X \= Y.
 
-% Signature: activity_participants_list(Name, List)/2
-% Purpose:
-%
+% Signature: activity_participants_list(Activity, List)/2
+% Purpose:  relationship between an activity name and list of all the childrens names that participate at this activity 
+activity_participants_list(_, []).
+activity_participants_list(Activity, [C|Cs]) :- participate(C,Activity),
+                                        activity_participants_list(Activity, Cs)
 
 % Signature: can_register(Child_name,Activity)/2
 % Purpose:
