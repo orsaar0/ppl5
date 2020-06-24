@@ -115,9 +115,14 @@
     (cond ((equal? assoc-list '()) (fail))
           ((equal? (car (car assoc-list)) key)
                   (success (cdr (car assoc-list))))
-           (else (get-value$ (cdr assoc-list) key success fail)))
+           (else (get-value$ 
+                    (cdr assoc-list)
+                    key
+                    (lambda (x) (success x))
+                    fail))
     )
   )
+)
 
 ;;Signature: collect-all-values(list-assoc-lists, key)
 ;;Purpose: Returns a list of all values of the first occurrence of 'key' in each of the given association lists. If no such value, returns the empty list.
