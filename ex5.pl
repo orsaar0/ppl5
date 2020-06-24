@@ -65,7 +65,6 @@ not_member(_, []).
 not_member(X, [Y|Ys]) :- X \= Y,
                          not_member(X, Ys).
 
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% To Do
 % Signature: pick_me_up(Child_name,Phone)/2
 % Purpose:  defines the relation between a child name and its parent phone number, when the parent has a car
