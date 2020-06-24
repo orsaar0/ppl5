@@ -113,7 +113,7 @@
 (define get-value$
   (lambda (assoc-list key success fail)
     (cond ((equal? assoc-list '()) (fail))
-           ((equal? (car (car assoc-list)) key)
+          ((equal? (car (car assoc-list)) key)
                   (success (cdr (car assoc-list))))
            (else (get-value$ (cdr assoc-list) key success fail)))
     )
@@ -128,15 +128,28 @@
 ;;(collect-all-values (list l1 l2) 'e) --> '(2 5)
 ;;(collect-all-values (list l1 l2) 'k)--> '()
 
-; (define collect-all-values-1
-;  (lambda (lists key)
-;   @TODO
-;  )
-; )
+(define collect-all-values-1
+ (lambda (lists key)
+  (cond ((equal? lists '()) '())
+        ((equal? (get-value (car lists) key) 'fail)
+                  (collect-all-values-1 (cdr lists) key))
+         (else (cons (get-value (car lists) key)
+                (collect-all-values-1 (cdr lists) key))))    
+                       
+ )
+)
 
-; (define collect-all-values-2
-;  (lambda (lists key)
-;   @TODO
-;  )
-; )
-   
+(define collect-all-values-2
+ (lambda (lists key)
+  (cond ((equal? lists '()) '())
+        ((equal? (get-value$ (car lists) key
+                            (lambda (x) x)
+                            (lambda () 'fail)) 'fail)
+                  (collect-all-values-2 (cdr lists) key))
+         (else (cons (get-value$ (car lists) key
+                            (lambda (x) x)
+                            (lambda () 'fail))
+                (collect-all-values-2 (cdr lists) key))))    
+                       
+ )
+)
