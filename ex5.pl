@@ -65,9 +65,7 @@ not_member(_, []).
 not_member(X, [Y|Ys]) :- X \= Y,
                          not_member(X, Ys).
 
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% To Do
-
 % Signature: pick_me_up(Child_name,Phone)/2
 % Purpose:  defines the relation between a child name and its parent phone number, when the parent has a car
 pick_me_up(Child_name,Phone) :- parents(Child_name,X,Y), parent_details(X, Phone, true).
@@ -81,9 +79,17 @@ active_child(Name):- participate(Name, X), participate(Name, Y), X \= Y.
 % Purpose:  relationship between an activity name and list of all the childrens names that participate at this activity 
 activity_participants_list(_, []).
 activity_participants_list(Activity, [C|Cs]) :- participate(C,Activity),
-                                        activity_participants_list(Activity, Cs)
+                                        activity_participants_list(Activity, Cs).
 
 % Signature: can_register(Child_name,Activity)/2
-% Purpose:
-%
+% Purpose:  defines the relation between a child name and an activity that the child can register to
+unavailable_day(Child,Day):- participate(Child,Ac), activity(Ac,Day).
+avalible_day(Child,Day):- not(unavailable_day(Child,Day)).
+can_register(Child_name,Activity):- 
+        activity(Activity,Day), avalible_day(Child_name,Day).
+        
 
+        %there is no other activity on the same day that the chiild participate in
+        %List - days of active days of the child
+        %Ac.day not a member of List ; activity(Activity, Day), not_member(Day, [unavilable days])
+                                        
